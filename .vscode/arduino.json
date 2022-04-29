@@ -1,0 +1,6 @@
+{
+    "board": "arduino:avr:uno",
+    "programmer": "arduino:avrisp",
+    "sketch": "led-sculpture.ino",
+    "port": "/dev/cu.usbmodem144301"
+}
