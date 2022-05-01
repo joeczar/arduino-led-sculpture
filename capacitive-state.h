@@ -12,7 +12,8 @@ CapacitiveSensor cs_2_4 = CapacitiveSensor(2, 4);
 const int sensitivity = 3000;
 const int threshhold = 100;
 int oldTime;
-int timeThreshhold = 300;
+int timeThreshholdShort = 300;
+int timeThreshholdLong = 600;
 
 int getTimePassed()
 {
@@ -30,7 +31,7 @@ void toggleState()
   if (sensor > threshhold)
   {
     int timePassed = getTimePassed();
-    if (timePassed > timeThreshhold)
+    if (timePassed > timeThreshholdLong)
     {
       lightsOn = !lightsOn;
       oldTime = millis();

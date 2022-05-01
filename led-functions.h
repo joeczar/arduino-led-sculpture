@@ -6,16 +6,20 @@
 #include "capacitive-state.h"
 
 const int leds[] = {3, 5, 6, 9, 10, 11};
+const int numLeds = sizeof(leds) / sizeof(leds[0]);
 long level;
 long randDelay;
 const int analogPin = A0;
+
+// sindFade
+int brightness = 0;
 
 // smooth LED fade
 int lastVals[] = {0, 0, 0, 0, 0, 0};
 
 void turnOff()
 {
-  for (int i = 0; i < 6; i++)
+  for (int i = 0; i < numLeds; i++)
   {
     analogWrite(leds[i], 0);
   }
@@ -43,7 +47,7 @@ void fadeInAll(int min, int max, int delayTime)
 {
   for (int i = min; i < max; i++)
   {
-    for (int j = 0; j < 6; j++)
+    for (int j = 0; j < numLeds; j++)
     {
       analogWrite(leds[j], i);
     }
@@ -54,7 +58,7 @@ void fadeOutAll(int max, int min, int delayTime)
 {
   for (int i = max; i > min; i--)
   {
-    for (int j = 0; j < 6; j++)
+    for (int j = 0; j < numLeds; j++)
     {
       analogWrite(leds[j], i);
     }
@@ -77,7 +81,7 @@ int randomLevel(int pin, int minLed, int maxLed)
 }
 void flicker()
 {
-  for (int i = 0; i < 6; i++)
+  for (int i = 0; i < numLeds; i++)
   {
     int level = randomLevel(leds[i], 0, 255);
     if (level > lastVals[i])
@@ -90,5 +94,48 @@ void flicker()
       fadeOut(leds[i], lastVals[i], level, random(0, 2));
       lastVals[i] = level;
     }
+  }
+}
+// fade in and out with sine wave
+void sineFadeOne(int led, int delayTime)
+{
+  for (int i = 0; i < 360; i++)
+  {
+    float angle = radians(i);
+    brightness = (255 / 2) + (255 / 2) * sin(angle);
+    analogWrite(led, brightness);
+    delay(delayTime);
+  }
+}
+void sineFadeAll(int delayTime)
+{
+  for (int i = 0; i < 360; i++)
+  {
+    float angle = radians(i);
+    brightness = (255 / 2) + (255 / 2) * sin(angle);
+    for (int j = 0; j < numLeds; j++)
+    {
+      analogWrite(leds[j], brightness);
+    }
+    delay(delayTime);
+  }
+}
+
+void movingSine()
+{
+  float current = millis() / 1000.0;
+  for (int i = 0; i < numLeds; i++)
+  {
+    float v = 0.0;
+    v += sin(i + current);
+    v = (v + 1.0) / 2.0;
+    Serial.print(v);
+    Serial.print(" ");
+    Serial.print(i);
+    Serial.print(" ");
+    Serial.print(current);
+    Serial.println(" ");
+
+    analogWrite(leds[i], v * 255);
   }
 }

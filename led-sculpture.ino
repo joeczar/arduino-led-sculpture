@@ -17,8 +17,10 @@ void loop()
   {
     // flicker();
 
-    fadeInOutAll(0, 255, 10);
-    delay(300);
+    // fadeInOutAll(0, 255, 10);
+    // delay(300);
+    // sineFadeAll(15);
+    movingSine();
   }
   else
   {
