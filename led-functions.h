@@ -129,13 +129,16 @@ void movingSine()
     float v = 0.0;
     v += sin(i + current);
     v = (v + 1.0) / 2.0;
-    Serial.print(v);
-    Serial.print(" ");
-    Serial.print(i);
-    Serial.print(" ");
-    Serial.print(current);
-    Serial.println(" ");
+    // v += sin(current);
+    // v += sin(1.0 * (i * sin(current / 0.5) + numLeds * cos(current / 0.25) + current));
 
-    analogWrite(leds[i], v * 255);
+    float angle = radians(i + v * 180);
+    // float piOne = sin(v * PI);
+    // float sinAngle = sin(v * angle) * PI;
+    // float piAngle = piOne * angle;
+    // float cosPi = cos(v * PI);
+    // float piTwo = sin(v * PI + 2.0 * PI / 3.0);
+
+    analogWrite(leds[i], angle * 255);
   }
 }
